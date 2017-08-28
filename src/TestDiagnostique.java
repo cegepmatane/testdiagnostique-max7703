@@ -15,7 +15,7 @@ public class TestDiagnostique {
 		JFrame maFenetre = new JFrame();
 		JPanel panneauPrincipal = new JPanel();
 		maFenetre.setTitle("Convertisseur d'argent");
-		maFenetre.setSize(600, 100);
+		maFenetre.setSize(600, 150);
 		maFenetre.setLocationRelativeTo(null);
 		maFenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		maFenetre.setContentPane(panneauPrincipal);
@@ -33,9 +33,9 @@ public class TestDiagnostique {
 		JComboBox<Object> devise = new JComboBox<Object>(listeDevise);
 		panneauPrincipal.add(devise);
 		
-		JButton ConvertirDevise = new JButton("------>");
-		panneauPrincipal.add(ConvertirDevise);
-		ConvertirDevise.addActionListener(null);
+		JButton convertirDevise = new JButton("------>");
+		panneauPrincipal.add(convertirDevise);
+		convertirDevise.addActionListener(null);
 		
 		String[] listeDevise1 = {"EUR", "USD", "XBT"};
 		JComboBox<Object> devise1 = new JComboBox<Object>(listeDevise1);
@@ -47,12 +47,12 @@ public class TestDiagnostique {
 		panneauPrincipal.add(Conversion);
 		panneauPrincipal.add(devise1);
 		
-		ConvertirDevise.addActionListener( new ActionListener()
+		//Quand on clique sur le bouton
+		convertirDevise.addActionListener( new ActionListener()
 		{
 		    @Override
 		    public void actionPerformed(ActionEvent e)
 		    {
-		        System.out.println("converted");
 				if(devise.getSelectedItem().toString() == "EUR")
 				{
 					taux = 1;
@@ -66,6 +66,7 @@ public class TestDiagnostique {
 					taux = (float) 3508.57;
 				}
 				
+				//Recuperation de la valeur du montant a convertir
 				float montantDeBase = Float.parseFloat(montant.getText());
 				float montantConverti = montantDeBase * taux;
 				
