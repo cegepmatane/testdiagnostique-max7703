@@ -1,25 +1,29 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
-@SuppressWarnings("serial")
-public class vueConvertisseurArgent extends JFrame 
+public class vueConvertisseurArgent implements EventHandler<ActionEvent>
 {
 	static float taux;
-	static JTextField montant;
+	static TextField montant;
 	static float montantDeBase;
 	static float montantConverti;
-	static JTextField Conversion;
-	JComboBox<Object> CbxDevise;
-	JComboBox<Object> CbxDevise1;
+	static TextField Conversion;
+	ComboBox<Object> CbxDevise;
+	ComboBox<Object> CbxDevise1;
 	static String devise;
 	static String devise1;
+	Button convertirDevise;
+	Label libelleMontant;
 	
 	public static float getMontant()
 	{
@@ -32,55 +36,56 @@ public class vueConvertisseurArgent extends JFrame
 		String fini = String.valueOf(montantConverti);
 		Conversion.setText(fini);
 	}
-	public vueConvertisseurArgent()
-	{
-		JPanel panneauPrincipal = new JPanel();
-		this.setTitle("Convertisseur d'argent");
-		this.setSize(600, 150);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setContentPane(panneauPrincipal);
-		
-		//Composant
-		JLabel libelleMontant = new JLabel();
-		montant = new JTextField(7);
-		libelleMontant.setText("Montant");
-		montant.setText("1.0");
-		panneauPrincipal.add(libelleMontant);
-		panneauPrincipal.add(montant);
-		
-		String[] listeDevise = {"EUR", "USD", "XBT"};
-		CbxDevise = new JComboBox<Object>(listeDevise);
-		panneauPrincipal.add(CbxDevise);
-		
-		JButton convertirDevise = new JButton("------>");
-		panneauPrincipal.add(convertirDevise);
-		convertirDevise.addActionListener(null);
-		
-		String[] listeDevise1 = {"EUR", "USD", "XBT"};
-		CbxDevise1 = new JComboBox<Object>(listeDevise1);
-		
-		JLabel libelleConversion = new JLabel();
-		Conversion = new JTextField(7);
-		libelleConversion.setText("Montant Converti");
-		panneauPrincipal.add(libelleConversion);
-		panneauPrincipal.add(Conversion);
-		panneauPrincipal.add(CbxDevise1);
-		
-		//Quand on clique sur le bouton
-		convertirDevise.addActionListener( new ActionListener()
-		{
-		    @Override
-		    public void actionPerformed(ActionEvent e)
-		    {
-		    	devise = (String) CbxDevise.getSelectedItem();
-	        	devise1 = (String) CbxDevise1.getSelectedItem();
-				controllerConvertisseurArgent.convertirArgent();
-		    }
-		});
 
-		//Afficher
-		this.setVisible(true);
+	public vueConvertisseurArgent(Stage primaryStage)
+	{
+        primaryStage.setTitle("Convertisseur d'argent");
+        convertirDevise = new Button();
+        convertirDevise.setText("------>");
+        //This class will handle the button events
+        convertirDevise.setOnAction(this);
+        
+        libelleMontant = new Label();
+        libelleMontant.setText("Montant");
+        
+        montant = new TextField();
+        montant.setText("1.0");
+        montant.setPrefWidth(200);
+        
+        ObservableList<Object> listeDevise = FXCollections.observableArrayList(
+                "EUR",
+                "USD",
+                "XBT"
+            );
+        CbxDevise = new ComboBox<Object>(listeDevise);
+        
+        ObservableList<Object> listeDevise1 = FXCollections.observableArrayList(
+                "EUR",
+                "USD",
+                "XBT"
+            );
+        CbxDevise1 = new ComboBox<Object>(listeDevise1);
+
+        Label libelleConversion = new Label();
+		libelleConversion.setText("Montant Converti");
+		
+		Conversion = new TextField();
+		Conversion.setPrefWidth(200);
+
+		HBox hbox = new HBox(libelleMontant, montant, CbxDevise, convertirDevise, libelleConversion, Conversion, CbxDevise1);
+		
+        Scene scene = new Scene(hbox, 810, 100);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+	}
+	@Override
+	public void handle(ActionEvent event) {
+        if (event.getSource() == convertirDevise) 
+        	System.out.println("Converted!");
+        	devise = (String) CbxDevise.getValue();
+        	devise1 = (String) CbxDevise1.getValue();
+        	controllerConvertisseurArgent.convertirArgent();
 	}
 
 }
