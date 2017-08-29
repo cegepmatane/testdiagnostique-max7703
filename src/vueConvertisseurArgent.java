@@ -16,8 +16,10 @@ public class vueConvertisseurArgent extends JFrame
 	static float montantDeBase;
 	static float montantConverti;
 	static JTextField Conversion;
-	static JComboBox<Object> devise;
-	static JComboBox<Object> devise1;
+	JComboBox<Object> CbxDevise;
+	JComboBox<Object> CbxDevise1;
+	static String devise;
+	static String devise1;
 	
 	public static float getMontant()
 	{
@@ -48,22 +50,22 @@ public class vueConvertisseurArgent extends JFrame
 		panneauPrincipal.add(montant);
 		
 		String[] listeDevise = {"EUR", "USD", "XBT"};
-		devise = new JComboBox<Object>(listeDevise);
-		panneauPrincipal.add(devise);
+		CbxDevise = new JComboBox<Object>(listeDevise);
+		panneauPrincipal.add(CbxDevise);
 		
 		JButton convertirDevise = new JButton("------>");
 		panneauPrincipal.add(convertirDevise);
 		convertirDevise.addActionListener(null);
 		
 		String[] listeDevise1 = {"EUR", "USD", "XBT"};
-		devise1 = new JComboBox<Object>(listeDevise1);
+		CbxDevise1 = new JComboBox<Object>(listeDevise1);
 		
 		JLabel libelleConversion = new JLabel();
 		Conversion = new JTextField(7);
 		libelleConversion.setText("Montant Converti");
 		panneauPrincipal.add(libelleConversion);
 		panneauPrincipal.add(Conversion);
-		panneauPrincipal.add(devise1);
+		panneauPrincipal.add(CbxDevise1);
 		
 		//Quand on clique sur le bouton
 		convertirDevise.addActionListener( new ActionListener()
@@ -71,6 +73,8 @@ public class vueConvertisseurArgent extends JFrame
 		    @Override
 		    public void actionPerformed(ActionEvent e)
 		    {
+		    	devise = (String) CbxDevise.getSelectedItem();
+	        	devise1 = (String) CbxDevise1.getSelectedItem();
 				controllerConvertisseurArgent.convertirArgent();
 		    }
 		});
